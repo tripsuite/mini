@@ -1,5 +1,5 @@
-import prisma from 'prisma/db';
-import { BookingModel } from 'models/booking';
+import prisma from '../../prisma/db';
+import { BookingModel } from '../../models/booking';
 
 export default class BookingService {
   public static async createBooking(booking: Omit<BookingModel, 'id'>) {
