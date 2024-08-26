@@ -12,17 +12,20 @@ afterAll(async () => {
 
 beforeEach(async () => {
   // Clear all tables before each test
-  const models = Reflect.ownKeys(prisma).filter(
-    (key) => !key.toString().startsWith('_'),
-  );
+  const tableNames = await prisma.$queryRaw<Array<{ name: string }>>`
+    SELECT 
+      name 
+    FROM
+      sqlite_master 
+    WHERE 
+          type='table' 
+      AND name NOT LIKE 'sqlite_%' 
+      AND name NOT LIKE '_prisma_migrations';
+  `;
 
-  console.log(models);
-
-  return Promise.all(
-    models.map((modelKey) => {
-      return prisma[modelKey as keyof typeof prisma].deleteMany();
-    }),
-  );
+  for (const { name } of tableNames) {
+    await prisma.$executeRawUnsafe(`DELETE FROM "${name}"`);
+  }
 });
 
 export { prisma };
