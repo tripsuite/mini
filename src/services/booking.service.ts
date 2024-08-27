@@ -1,8 +1,15 @@
-import prisma from '../../prisma/db';
-import { BookingModel } from '../../models/booking';
+import { Booking } from '@prisma/client';
+import prisma from 'prisma/db';
+
+export enum SupplierType {
+  HOTEL = 'HOTEL',
+  AIRLINE = 'AIRLINE',
+}
 
 export default class BookingService {
-  public static async createBooking(booking: Omit<BookingModel, 'id'>) {
+  public static async createBooking(
+    booking: Omit<Booking, 'id' | 'deletedAt'>,
+  ) {
     return prisma.booking.create({
       data: {
         ...booking,

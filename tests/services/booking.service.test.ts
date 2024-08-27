@@ -1,7 +1,6 @@
-import BookingService from 'services/booking.service';
+import { Booking, Prisma, Supplier, Trip } from '@prisma/client';
+import BookingService, { SupplierType } from 'src/services/booking.service';
 import { prisma } from 'tests/prisma';
-import { Booking, Supplier, Trip } from '@prisma/client';
-import { SupplierType } from 'models/supplier';
 
 describe('BookingService', () => {
   let trip: Trip;
@@ -36,7 +35,7 @@ describe('BookingService', () => {
         tripId: trip.id,
         supplierId: supplier.id,
         checkIn: new Date(),
-        total: 100,
+        total: new Prisma.Decimal(100),
       };
 
       const booking = await BookingService.createBooking(payload);
