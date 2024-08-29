@@ -62,5 +62,7 @@ describe('Booking API', () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ message: 'Deleted' });
+
+    // TODO: let's call our getBooking endpoint to make sure the booking was deleted with an expect
   });
 });
