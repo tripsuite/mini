@@ -8,9 +8,7 @@ app.use(express.json());
 
 // GET route
 app.get('/api/trips/:tripId/bookings', async (req: Request, res: Response) => {
-  const { tripId } = req.params;
-  const bookings = await BookingService.getBookings(tripId);
-  res.send({ bookings });
+  res.send({ status: 'ok' });
 });
 
 // POST route

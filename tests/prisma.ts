@@ -11,21 +11,11 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-  // Clear all tables before each test
-  const tableNames = await prisma.$queryRaw<Array<{ name: string }>>`
-    SELECT 
-      name 
-    FROM
-      sqlite_master 
-    WHERE 
-          type='table' 
-      AND name NOT LIKE 'sqlite_%' 
-      AND name NOT LIKE '_prisma_migrations';
-  `;
-
-  for (const { name } of tableNames) {
-    await prisma.$executeRawUnsafe(`DELETE FROM "${name}"`);
-  }
+  await prisma.$executeRawUnsafe(`
+    DELETE FROM "Booking";
+    DELETE FROM "Supplier";
+    DELETE FROM "Trip";
+  `);
 });
 
 export { prisma };

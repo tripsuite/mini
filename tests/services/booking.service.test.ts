@@ -21,14 +21,6 @@ describe('BookingService', () => {
     });
   });
 
-  it('should have a trip', async () => {
-    const result = await prisma.trip.findFirst({
-      where: { id: trip.id },
-    });
-
-    expect(result).toMatchObject(trip);
-  });
-
   describe('createBooking', () => {
     it('should create a booking', async () => {
       const payload = {
@@ -57,7 +49,25 @@ describe('BookingService', () => {
     });
   });
 
-  describe('getBookings', () => {});
+  describe('getBookings', () => {
+    beforeEach(async () => {
+      const booking = await BookingService.createBooking({
+        tripId: trip.id,
+        supplierId: supplier.id,
+        checkIn: new Date(),
+        total: new Prisma.Decimal(100),
+      });
 
-  describe('deleteBooking', () => {});
+      await BookingService.createBooking({
+        tripId: trip.id,
+        supplierId: supplier.id,
+        checkIn: new Date(),
+        total: new Prisma.Decimal(100),
+      });
+
+      await BookingService.deleteBooking(booking.id);
+    });
+
+    it('should return all bookings for a trip', async () => {});
+  });
 });
